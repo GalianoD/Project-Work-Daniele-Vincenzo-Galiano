@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Dolce Vita - Prenotazioni</title>
+</head>
+<body>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+        }
+    
+        .logo-nav-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+    
+        header img {
+            margin-bottom: 20px; 
+        }
+    
+        nav {
+            display: flex;
+            justify-content: center; 
+        }
+    
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 2em; 
+            margin: 0;
+        }
+    
+        nav ul li {
+            margin: 0;
+        }
+    
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+    
+        .login-button {
+            position: absolute;
+            right: 20px; 
+            bottom: 20px; 
+            transform: translateY(50%); 
+            display: flex;
+            align-items: center;
+        }
+    
+        .login-icon {
+            width: 60px;
+            height: 60px;
+        }
+    
+        .login-button img {
+            display: block;
+        }
+    
+        .login-button:hover {
+            opacity: 0.8;
+        }
+    
+        main {
+            padding: 2em;
+        }
+    
+        section {
+            margin-bottom: 2em;
+        }
+    
+        form label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+    
+        form input {
+            width: 100%;
+            padding: 0.5em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    
+        form button {
+            background-color: #333;
+            color: #fff;
+            padding: 0.75em 1.5em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    
+        form button:hover {
+            background-color: #555;
+        }
+    
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+
+    <!-- Intestazione della pagina -->
+    <header>
+        <img src="images/LOGO.svg" alt="La Dolce Vita" width="150" height="auto">
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="mie-prenotazioni.html">Le mie Prenotazioni</a></li>
+                <li><a href="contatti.html">Contatti</a></li>
+            </ul>
+            <a href="login.html" class="login-button">
+                <img src="/Users/utente/Desktop/TESI/images/LOGOUSER.svg" alt="Login" class="login-icon">
+            </a>
+        </nav>
+    </header>
+
+    <!-- Contenuto principale della pagina -->
+    <main>
+        <section id="home">
+            <h2>Benvenuti a La Dolce Vita</h2>
+            <p>Il miglior ristorante in città. Prenota un tavolo ora!</p>
+        </section>
+        <section id="prenotazioni">
+            <h2>Prenota un Tavolo</h2>
+            <form id="booking-form">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="date">Data:</label>
+                <input type="date" id="date" name="date" required>
+                <label for="time">Ora:</label>
+                <input type="time" id="time" name="time" required>
+                <label for="guests">Numero di Persone:</label>
+                <input type="number" id="guests" name="guests" min="1" max="10" required>
+                <button type="submit">Prenota</button>
+            </form>
+        </section>
+        <section id="contatti">
+            <h2>Contattaci</h2>
+            <p>Email: info@ladolcevita.com</p>
+            <p>Telefono: 123-456-7890</p>
+        </section>
+    </main>
+
+    <!-- Elementi a piè di pagina -->
+    <footer>
+        <p>&copy; 2024 La Dolce Vita. Tutti i diritti riservati.</p>
+    </footer>
+
+    <!-- Invio del modulo di prenotazione -->
+    <script>
+        document.getElementById('booking-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const bookingData = {
+                name: event.target.name.value,
+                email: event.target.email.value,
+                date: event.target.date.value,
+                time: event.target.time.value,
+                guests: event.target.guests.value,
+            };
+
+            fetch('http://localhost:5000/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bookingData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(error => {
+                        throw new Error(error.error);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Prenotazione effettuata con successo!');
+                resetFormFields();
+            })
+            .catch(error => {
+                alert(`Errore: ${error.message}`);
+                resetFormFields();  
+            });
+
+            function resetFormFields() {
+                document.getElementById('booking-form').reset(); 
+            }
+        });
+    </script>
+</body>
+</html>

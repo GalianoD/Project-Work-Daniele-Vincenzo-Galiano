@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti - La Dolce Vita</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+        }
+
+        .logo-nav-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        header img {
+            margin-bottom: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center; 
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 2em;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .login-button {
+            position: absolute;
+            right: 20px;
+            bottom: 20px; 
+            transform: translateY(50%); 
+            display: flex;
+            align-items: center;
+        }
+
+        .login-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .login-button img {
+            display: block;
+        }
+
+        .login-button:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            padding: 2em;
+        }
+
+        .contact-info {
+            margin-bottom: 2em;
+        }
+
+        .contact-info .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1em;
+        }
+
+        .contact-info img {
+            width: 24px; 
+            height: auto;
+            margin-right: 10px; 
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 2em;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Intestazione della pagina -->
+    <header>
+        <img src="images/LOGO.svg" alt="La Dolce Vita" width="150" height="auto">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="mie-prenotazioni.html">Le mie Prenotazioni</a></li>
+                <li><a href="contatti.html">Contatti</a></li>
+            </ul>
+            <a href="login.html" class="login-button">
+                <img src="/Users/utente/Desktop/TESI/images/LOGOUSER.svg" alt="Login" class="login-icon">
+            </a>
+        </nav>
+    </header>
+
+    <!-- Contenuto principale della pagina -->
+    <main>
+        <section id="contatti">
+            <h2>Contattaci</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <img src="images/mail.png" alt="Email">
+                    <p>Email: info@ladolcevita.com</p>
+                </div>
+                <div class="contact-item">
+                    <img src="images/telephone.png" alt="Telefono">
+                    <p>Telefono: 123-456-7890</p>
+                </div>
+                <div class="contact-item">
+                    <img src="images/social-media.png" alt="Facebook">
+                    <p><a href="https://facebook.com/ladolcevita" target="_blank">Facebook</a></p>
+                </div>
+                <div class="contact-item">
+                    <img src="images/instagram.png" alt="Instagram">
+                    <p><a href="https://instagram.com/ladolcevita" target="_blank">Instagram</a></p>
+                </div>
+            </div>
+            <h2>Come raggiungerci</h2>
+            <div class="map-container">
+                <!-- Google Maps Embed -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2886.622856458595!2d12.490367215645782!3d41.8913322191742!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f61b7274f0305%3A0x92ab2b8672e77e6b!2sVia%20Nicola%20Salvi%2C%2073%2C%2000184%20Roma%20RM!5e0!3m2!1sit!2sit!4v1642466687931!5m2!1sit!2sit"
+                    width="100%"
+                    height="80%"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy">
+                </iframe>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Elementi a piè di pagina -->
+    <footer>
+        <p>&copy; 2024 La Dolce Vita. Tutti i diritti riservati.</p>
+    </footer>
+</body>
+</html>

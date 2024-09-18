@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le mie Prenotazioni</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            position: relative;
+            text-align: center;
+        }
+
+        .logo-nav-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        header img {
+            margin-bottom: 20px; 
+        }
+
+        nav {
+            display: flex;
+            justify-content: center; 
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 2em;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .login-button {
+            position: absolute;
+            right: 20px; 
+            bottom: 20px; 
+            transform: translateY(50%); 
+            display: flex;
+            align-items: center;
+        }
+
+        .login-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .login-button img {
+            display: block;
+        }
+
+        .login-button:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            padding: 2em;
+        }
+
+        .reservation {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1em;
+            margin-bottom: 1em;
+        }
+
+        .reservation button {
+            background-color: #333;
+            color: #fff;
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.5em;
+        }
+
+        .reservation button:hover {
+            background-color: #555;
+        }
+
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px; 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Intestazione della pagina -->
+    <header>
+        <img src="images/LOGO.svg" alt="La Dolce Vita" width="150" height="auto">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="mie-prenotazioni.html">Le mie Prenotazioni</a></li>
+                <li><a href="#contatti">Contatti</a></li>
+            </ul>
+            <a href="login.html" class="login-button">
+                <img src="/Users/utente/Desktop/TESI/images/LOGOUSER.svg" alt="Login" class="login-icon">
+            </a>
+        </nav>
+    </header>
+
+    <!-- Contenuto principale della pagina -->
+    <main>
+        <h2>Prenotazioni Effettuate</h2>
+        <div id="reservations-container"> </div>
+    </main>
+
+    <!-- Elementi a piè di pagina -->
+    <footer>
+        <p>&copy; 2024 La Dolce Vita. Tutti i diritti riservati.</p>
+    </footer>
+
+    <!--  Modifica prenotazione -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Modifica Prenotazione</h2>
+            <form id="edit-form">
+                <input type="hidden" id="edit-id">
+                <label for="edit-date">Data:</label>
+                <input type="date" id="edit-date" name="date" required>
+                <label for="edit-time">Ora:</label>
+                <input type="time" id="edit-time" name="time" required>
+                <label for="edit-guests">Numero di Persone:</label>
+                <input type="number" id="edit-guests" name="guests" min="1" max="10" required>
+                <button type="submit">Aggiorna</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Gestione delle prenotazioni -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:5000/bookings')
+                .then(response => response.json())
+                .then(data => {
+                    const reservationsContainer = document.getElementById('reservations-container');
+                    reservationsContainer.innerHTML = '';
+
+                    data.forEach(booking => {
+                        const reservationDiv = document.createElement('div');
+                        reservationDiv.className = 'reservation';
+                        
+                        reservationDiv.innerHTML = `
+                            <div class="details">
+                                <p><strong>Nome:</strong> ${booking.name}</p>
+                                <p><strong>Email:</strong> ${booking.email}</p>
+                                <p><strong>Data:</strong> ${booking.date}</p>
+                                <p><strong>Ora:</strong> ${booking.time}</p>
+                                <p><strong>Numero di Persone:</strong> ${booking.guests}</p>
+                            </div>
+                            <button onclick="showEditModal(${booking.id}, '${booking.date}', '${booking.time}', ${booking.guests})">Modifica</button>
+                            <button onclick="deleteReservation(${booking.id})">Elimina</button>
+                        `;
+                        
+                        reservationsContainer.appendChild(reservationDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Si è verificato un errore durante il caricamento delle prenotazioni.');
+                });
+        });
+
+        function showEditModal(id, date, time, guests) {
+            // Mostra la finestra per modificare una prenotazione
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-date').value = date;
+            document.getElementById('edit-time').value = time;
+            document.getElementById('edit-guests').value = guests;
+
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            // Chiude la finestra
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+        }
+
+        document.querySelector('.close').addEventListener('click', closeModal);
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        });
+
+        document.getElementById('edit-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const bookingData = {
+                date: event.target.date.value,
+                time: event.target.time.value,
+                guests: event.target.guests.value,
+            };
+
+            const id = document.getElementById('edit-id').value;
+            
+            // Invio dati aggiornati della prenotazione al server
+            fetch(`http://localhost:5000/bookings/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bookingData),
+            })
+            .then(response => response.json())
+            .then(() => {
+                alert('Prenotazione aggiornata con successo!');
+                closeModal();
+                document.location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Si è verificato un errore durante l\'aggiornamento della prenotazione.');
+            });
+        });
+
+        function deleteReservation(id) {
+            // Conferma ed elimina prenotazione
+            if (confirm('Sei sicuro di voler eliminare questa prenotazione?')) {
+                fetch(`http://localhost:5000/bookings/${id}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Prenotazione eliminata con successo!');
+                        document.location.reload();
+                    } else {
+                        return response.json().then(error => { throw new Error(error.error); });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Si è verificato un errore durante l\'eliminazione della prenotazione.');
+                });
+            }
+        }
+
+    </script>
+</body>
+</html>
