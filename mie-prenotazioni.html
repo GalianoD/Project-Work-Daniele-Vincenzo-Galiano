@@ -196,7 +196,7 @@
     <!-- Gestione delle prenotazioni -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:5000/bookings')
+            fetch('http://127.0.0.1:5000/bookings')
                 .then(response => response.json())
                 .then(data => {
                     const reservationsContainer = document.getElementById('reservations-container');
@@ -263,8 +263,8 @@
 
             const id = document.getElementById('edit-id').value;
             
-            // Invio dati aggiornati della prenotazione al server
-            fetch(`http://localhost:5000/bookings/${id}`, {
+            // Invio dati della prenotazione al server
+            fetch(`http://127.0.0.1:5000/bookings/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -286,7 +286,7 @@
         function deleteReservation(id) {
             // Conferma ed elimina prenotazione
             if (confirm('Sei sicuro di voler eliminare questa prenotazione?')) {
-                fetch(`http://localhost:5000/bookings/${id}`, {
+                fetch(`http://127.0.0.1:5000/bookings/${id}`, {
                     method: 'DELETE',
                 })
                 .then(response => {
